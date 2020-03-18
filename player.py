@@ -1,6 +1,6 @@
 from pygame.image import load
 from pygame.transform import flip, scale
-from constant import WIDTH, HEIGHT
+from constant import WIDTH, HEIGHT, IMG_WIDTH, IMG_HEIGHT
 
 
 def load_sprit(who, what, nb_sprites):
@@ -8,7 +8,7 @@ def load_sprit(who, what, nb_sprites):
     sprit_images = []
     for sprite_id in range(1, nb_sprites + 1):
         img = load(path + str(sprite_id) + ".png")
-        img = scale(img, (32, 32))
+        img = scale(img, (IMG_WIDTH, IMG_HEIGHT))
         sprit_images.append(img)
     return sprit_images
 
@@ -39,7 +39,7 @@ class Player:
         else:
             self.character_state_id = 0
             self.character_state = self.CHARACTER_WALK_RIGHT
-        if(self.x + self.step <= WIDTH):
+        if(self.x + IMG_WIDTH <= WIDTH):
             self.x += self.step
 
     def goLeft(self):
@@ -48,7 +48,8 @@ class Player:
         else:
             self.character_state_id = 0
             self.character_state = self.CHARACTER_WALK_LEFT
-        self.x -= self.step
+        if(self.x > 0):
+            self.x -= self.step
 
     def climb_up(self):
         if(self.character_state == self.CHARACTER_CLIMBS_UP):
@@ -56,7 +57,8 @@ class Player:
         else:
             self.character_state_id = 0
             self.character_state = self.CHARACTER_CLIMBS_UP
-        self.y -= self.step
+        if(self.y > 0):
+            self.y -= self.step
 
     def climb_down(self):
         if(self.character_state == self.CHARACTER_CLIMBS_DOWN):
@@ -64,7 +66,8 @@ class Player:
         else:
             self.character_state_id = 0
             self.character_state = self.CHARACTER_CLIMBS_DOWN
-        self.y += self.step
+        if(self.y + IMG_HEIGHT <= HEIGHT):
+            self.y += self.step
 
     def die(self):
         if(self.dead):
