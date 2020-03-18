@@ -2,15 +2,18 @@ import pygame
 
 # Import from my files
 from display import display
-from constant import WIDTH, HEIGHT, FPS
+from constant import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
 from player import Player
+from background import Burger_spot
+from food import Bread_bottom
 
 # Initialisation sons et pygame
 pygame.mixer.init()
 pygame.init()
 
 # Création de la fenêtre - doubles parenthèses car tuple
-screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
+screen = pygame.display.set_mode(
+    (WINDOW_WIDTH, WINDOW_HEIGHT), pygame.RESIZABLE)
 # Nom du jeu
 pygame.display.set_caption("Burger Time")
 
@@ -19,9 +22,10 @@ clock = pygame.time.Clock()
 
 # Création du joueur
 character = Player()
-
+burger_spot_1 = Burger_spot()
+bread_bottom = Bread_bottom()
 # Appel du display (fonction personnelle dans display.py)
-display(screen, character)
+display(screen, character, burger_spot_1, bread_bottom)
 
 # Boucle - le jeu
 running = True
@@ -75,6 +79,6 @@ while running:
                 running = False
 
     # Mis à jour de l'affichage
-    display(screen, character)
+    display(screen, character, burger_spot_1, bread_bottom)
 
 pygame.quit()
