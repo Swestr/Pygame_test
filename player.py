@@ -39,7 +39,8 @@ class Player:
         else:
             self.character_state_id = 0
             self.character_state = self.CHARACTER_WALK_RIGHT
-        self.x += self.step
+        if(self.x + self.step <= WIDTH):
+            self.x += self.step
 
     def goLeft(self):
         if(self.character_state == self.CHARACTER_WALK_LEFT):
