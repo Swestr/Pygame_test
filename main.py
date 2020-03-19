@@ -3,9 +3,11 @@ import pygame
 # Import from my files
 from display import display
 from constant import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
+from constant import BACKGROUND_WIDTH, BACKGROUND_HEIGHT, FPS
+from constant import BURGER_SPOT_WIDTH, BURGER_LAYER_SPACE
 from player import Player
-from background import Burger_spot
-from food import Bread_bottom
+from background import Burger_spot, createBackground
+from food import Burger
 
 # Initialisation sons et pygame
 pygame.mixer.init()
@@ -22,10 +24,25 @@ clock = pygame.time.Clock()
 
 # Création du joueur
 character = Player()
-burger_spot_1 = Burger_spot()
-bread_bottom = Bread_bottom()
+
+# Création des emplacements pour les burgers
+bs1 = Burger_spot(BURGER_LAYER_SPACE, WINDOW_HEIGHT - 50)
+x = BURGER_LAYER_SPACE * 2 + BURGER_SPOT_WIDTH
+bs2 = Burger_spot(x, WINDOW_HEIGHT - 50)
+x = BURGER_LAYER_SPACE * 3 + BURGER_SPOT_WIDTH * 2
+bs3 = Burger_spot(x, WINDOW_HEIGHT - 50)
+x = BURGER_LAYER_SPACE * 4 + BURGER_SPOT_WIDTH * 3
+bs4 = Burger_spot(x, WINDOW_HEIGHT - 50)
+burger_spot = [bs1, bs2, bs3, bs4]
+
+# Création des burgers
+burger = [Burger().layers, Burger().layers, Burger().layers, Burger().layers]
+
+# Création du fond
+background = createBackground()
+
 # Appel du display (fonction personnelle dans display.py)
-display(screen, character, burger_spot_1, bread_bottom)
+display(screen, character, background, burger_spot, burger)
 
 # Boucle - le jeu
 running = True
@@ -79,6 +96,7 @@ while running:
                 running = False
 
     # Mis à jour de l'affichage
-    display(screen, character, burger_spot_1, bread_bottom)
+    display(screen, character, background, burger_spot, burger)
+
 
 pygame.quit()

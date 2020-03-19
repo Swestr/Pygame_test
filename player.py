@@ -1,15 +1,16 @@
 from load_sprit import load_sprit
 from pygame.transform import flip
-from constant import WINDOW_WIDTH, WINDOW_HEIGHT
+from constant import MARGIN_LEFT, MARGIN_RIGHT, MARGIN_TOP, MARGIN_BOTTOM
 from constant import CHARACTER_WIDTH, CHARACTER_HEIGHT
+from pygame import Rect
 
 
 class Player:
 
     def __init__(self):
-        self.x = 0
-        self.y = 0
-        self.step = 10
+        self.x = 100
+        self.y = 250
+        self.step = 8
         self.dead = False
 
         self.CHARACTER_STANDS = load_sprit(
@@ -29,6 +30,8 @@ class Player:
                                                  True, False)
         self.character_state = self.CHARACTER_STANDS
         self.character_state_id = -1
+        self.rectangle = Rect(
+            self.x, self.y, CHARACTER_WIDTH, CHARACTER_HEIGHT)
 
     def goRight(self):
         if(self.character_state == self.CHARACTER_WALK_RIGHT):
@@ -36,7 +39,7 @@ class Player:
         else:
             self.character_state_id = 0
             self.character_state = self.CHARACTER_WALK_RIGHT
-        if(self.x + CHARACTER_WIDTH <= WINDOW_WIDTH):
+        if(self.x + CHARACTER_WIDTH <= MARGIN_RIGHT):
             self.x += self.step
 
     def goLeft(self):
@@ -45,7 +48,7 @@ class Player:
         else:
             self.character_state_id = 0
             self.character_state = self.CHARACTER_WALK_LEFT
-        if(self.x > 0):
+        if(self.x > MARGIN_LEFT):
             self.x -= self.step
 
     def climb_up(self):
@@ -54,7 +57,7 @@ class Player:
         else:
             self.character_state_id = 0
             self.character_state = self.CHARACTER_CLIMBS_UP
-        if(self.y > 0):
+        if(self.y > MARGIN_TOP):
             self.y -= self.step
 
     def climb_down(self):
@@ -63,7 +66,7 @@ class Player:
         else:
             self.character_state_id = 0
             self.character_state = self.CHARACTER_CLIMBS_DOWN
-        if(self.y + CHARACTER_HEIGHT <= WINDOW_HEIGHT):
+        if(self.y + CHARACTER_HEIGHT <= MARGIN_BOTTOM):
             self.y += self.step
 
     def die(self):

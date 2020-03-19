@@ -1,14 +1,19 @@
 import pygame
 from constant import BLACK, FOOD_PIECE_WIDTH
+from constant import MARGIN_TOP, MARGIN_LEFT
 
 
-def display(screen, player, background, food):
+def display(screen, player, background, burger_spot, burger):
     STATE = player.character_state
     ID = player.character_state_id
     POSITION = (player.x, player.y)
 
     # Le background
     screen.fill(BLACK)
+    for piece in background:
+        piece.IMAGE.set_colorkey(BLACK)
+        screen.blit(piece.IMAGE, (piece.x + MARGIN_LEFT, piece.y + MARGIN_TOP))
+
     # Le personnage
     if ID == -1:
         STATE.set_colorkey(BLACK)
@@ -17,17 +22,24 @@ def display(screen, player, background, food):
         STATE[ID % len(STATE)].set_colorkey(BLACK)
         screen.blit(STATE[ID % len(STATE)], POSITION)
 
-    # Un emplacement à burger entier
-    background.BURGER_SPOT.set_colorkey(BLACK)
-    screen.blit(background.BURGER_SPOT, (background.x, background.y))
+    # Emplacements à burger entier
+    for burger_spot_id in range(len(burger_spot)):
+        burger_spot[burger_spot_id].BURGER_SPOT.set_colorkey(BLACK)
+        screen.blit(burger_spot[burger_spot_id].BURGER_SPOT,
+                    (burger_spot[burger_spot_id].x, burger_spot[burger_spot_id].y))
 
-    # Un pain inférieur du burger sur l'emplacement
-    for i in range(len(food.FOOD_PIECES)):
-        food.FOOD_PIECES[i].set_colorkey(BLACK)
-        x = food.DIFF_WITH_SPOT_x + background.x
-        y = food.DIFF_WITH_SPOT_y + background.y
-        screen.blit(food.FOOD_PIECES[i],
-                    (x + i * FOOD_PIECE_WIDTH, y))
+    # Burger
+    for burger_id in range(len(burger)):
+        for burger_layer in range(len(burger[burger_id])):
+            for burger_image in range(len(burger[burger_id][burger_layer].FOOD_PIECES)):
+                burger[burger_id][burger_layer].FOOD_PIECES[burger_image].set_colorkey(
+                    BLACK)
+                x = burger[burger_id][burger_layer].DIFF_WITH_SPOT_x + \
+                    burger_spot[burger_id].x
+                y = burger[burger_id][burger_layer].DIFF_WITH_SPOT_y + \
+                    burger_spot[burger_id].y
+                screen.blit(burger[burger_id][burger_layer].FOOD_PIECES[burger_image],
+                            (x + burger_image * FOOD_PIECE_WIDTH, y))
 
     # Refresh
     pygame.display.flip()
